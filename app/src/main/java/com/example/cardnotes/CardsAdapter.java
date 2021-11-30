@@ -1,25 +1,36 @@
 package com.example.cardnotes;
 
+import android.app.Activity;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHolder> {
-    private final List<CardNote> cardList;
+    private final CardSource source;
+    private final Activity activity;
     private OnCardClickListener clickListener;
+    private int menuPosition = -1;
 
-    public CardsAdapter(List<CardNote> cardList) {
-        this.cardList = cardList;
+    public CardsAdapter(Activity activity, CardSource source) {
+        this.activity = activity;
+        this.source = source;
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
+    }
+
+    public void setMenuPosition(int menuPosition) {
+        this.menuPosition = menuPosition;
     }
 
     @NonNull
@@ -35,12 +46,12 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-        holder.bind(cardList.get(position));
+        holder.bind(source.getCardNote(position));
     }
 
     @Override
     public int getItemCount() {
-        return cardList.size();
+        return source.size();
     }
 
     class CardViewHolder extends RecyclerView.ViewHolder {
@@ -54,8 +65,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
+            activity.registerForContextMenu(itemView);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         void bind(CardNote cardNote) {
             imageView.setImageResource(cardNote.getImage());
             like.setChecked(cardNote.isLike());
@@ -67,6 +80,12 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardViewHold
                 if (clickListener != null) {
                     clickListener.onCardClick(v, getAdapterPosition());
                 }
+            });
+
+            itemView.setOnLongClickListener(view -> {
+                menuPosition = getLayoutPosition();
+                itemView.showContextMenu(10, 10);
+                return false;
             });
 
             like.setOnClickListener(v -> {
