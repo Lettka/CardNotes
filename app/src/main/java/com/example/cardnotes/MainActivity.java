@@ -104,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
             MyDialogFragment dialogFragment = MyDialogFragment.newInstance();
             dialogFragment.setOnDialogListener(dialogListener);
             dialogFragment.show(getSupportFragmentManager(), "dialog_fragment");
-          /*  source.updateNote(adapter.getMenuPosition(), dialogListener.getTitleNotes(), dialogListener.getContextNotes());
-            adapter.notifyItemChanged(adapter.getMenuPosition());*/
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             source.deleteNote(adapter.getMenuPosition());
