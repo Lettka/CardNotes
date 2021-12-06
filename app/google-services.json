@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "218565286305",
+    "project_id": "cardnotes-44790",
+    "storage_bucket": "cardnotes-44790.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218565286305:android:c8390816de003e30e293e0",
+        "android_client_info": {
+          "package_name": "com.example.cardnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218565286305-ievq60n59dsuvvk5f0mls2bm3ab7mans.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAecCWZda9e51i6X72ZSLW7ZJyDTlLTF5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218565286305-ievq60n59dsuvvk5f0mls2bm3ab7mans.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

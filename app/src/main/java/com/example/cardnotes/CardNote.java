@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CardNote implements Parcelable {
+    private String id;
     private String titleNotes;
     private String contextNotes;
     private String date;
@@ -33,9 +34,37 @@ public class CardNote implements Parcelable {
         this(titleNotes, contextNotes, getCurrentDate(), image, false);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public CardNote() {
         this("", "", getCurrentDate(), 0, false);
     }
+
+    protected CardNote(Parcel in) {
+        titleNotes = in.readString();
+        contextNotes = in.readString();
+        date = in.readString();
+        image = in.readInt();
+        isLike = in.readByte() != 0;
+    }
+
+    public static final Creator<CardNote> CREATOR = new Creator<CardNote>() {
+        @Override
+        public CardNote createFromParcel(Parcel in) {
+            return new CardNote(in);
+        }
+
+        @Override
+        public CardNote[] newArray(int size) {
+            return new CardNote[size];
+        }
+    };
 
     public static String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -90,6 +119,10 @@ public class CardNote implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeString(titleNotes);
+        parcel.writeString(contextNotes);
+        parcel.writeString(date);
+        parcel.writeInt(image);
+        parcel.writeByte((byte) (isLike ? 1 : 0));
     }
 }

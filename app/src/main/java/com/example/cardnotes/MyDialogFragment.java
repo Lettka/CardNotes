@@ -33,6 +33,7 @@ public class MyDialogFragment extends DialogFragment {
             dismiss();
             dialogListener.setTitleNotes(titleNote.getText().toString());
             dialogListener.setContextNotes(contextNote.getText().toString());
+            dialogListener.updateDataNote(titleNote.getText().toString(), contextNote.getText().toString());
         });
         return view;
     }

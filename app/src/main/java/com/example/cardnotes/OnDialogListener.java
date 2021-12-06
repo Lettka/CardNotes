@@ -8,4 +8,6 @@ public interface OnDialogListener {
     String getContextNotes();
 
     void setContextNotes(String contextNotes);
+
+    void updateDataNote(String titleNotes, String contextNotes);
 }

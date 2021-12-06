@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
@@ -32,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
 
-        source = new CardSourceImp(this);
+        //source = new CardSourceImp(this);
+        source = new FirebaseCardSource(() -> {
+            adapter.notifyDataSetChanged();
+        });
 
         adapter = new CardsAdapter(this, source);
         adapter.setClickListener((view, position) -> {
@@ -78,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
             public void setContextNotes(String contextNotes) {
                 source.getCardNote(adapter.getMenuPosition()).setContextNotes(contextNotes);
             }
+
+            @Override
+            public void updateDataNote(String titleNotes, String contextNotes) {
+                source.updateNote(adapter.getMenuPosition(), dialogListener.getTitleNotes(), dialogListener.getContextNotes());
+                adapter.notifyItemChanged(adapter.getMenuPosition());
+            }
         };
 
     }
@@ -94,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
             MyDialogFragment dialogFragment = MyDialogFragment.newInstance();
             dialogFragment.setOnDialogListener(dialogListener);
             dialogFragment.show(getSupportFragmentManager(), "dialog_fragment");
-            source.updateNote(adapter.getMenuPosition(), dialogListener.getTitleNotes(), dialogListener.getContextNotes());
-            adapter.notifyItemChanged(adapter.getMenuPosition());
+          /*  source.updateNote(adapter.getMenuPosition(), dialogListener.getTitleNotes(), dialogListener.getContextNotes());
+            adapter.notifyItemChanged(adapter.getMenuPosition());*/
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             source.deleteNote(adapter.getMenuPosition());
@@ -126,13 +136,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            source.addNote(new CardNote());
+            CardNote note = new CardNote();
+            note.setId(UUID.randomUUID().toString());
+            source.addNote(note);
             adapter.setMenuPosition(source.size() - 1);
+            adapter.notifyItemInserted(source.size() - 1);
+            recyclerView.scrollToPosition(source.size() - 1);
             MyDialogFragment dialogFragment = MyDialogFragment.newInstance();
             dialogFragment.setOnDialogListener(dialogListener);
             dialogFragment.show(getSupportFragmentManager(), "dialog_fragment");
-            adapter.notifyItemInserted(source.size() - 1);
-            recyclerView.scrollToPosition(source.size() - 1);
             return true;
         } else if (item.getItemId() == R.id.action_clear) {
             int size = source.size();
