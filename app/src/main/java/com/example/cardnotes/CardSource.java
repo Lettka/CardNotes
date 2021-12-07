@@ -7,4 +7,5 @@ public interface CardSource {
     void updateNote(int position, String title, String context);
     void addNote(CardNote note);
     void clearNotes();
+    void updateList(FirebaseCardSource.OnInitListener onInitListener);
 }

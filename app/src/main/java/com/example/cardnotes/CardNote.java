@@ -8,6 +8,8 @@ import androidx.annotation.IdRes;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
+import java.util.UUID;
 
 public class CardNote implements Parcelable {
     private String id;
@@ -24,6 +26,7 @@ public class CardNote implements Parcelable {
         this.date = date;
         this.image = image;
         this.isLike = isLike;
+        this.id = UUID.randomUUID().toString();
     }
 
     public CardNote(String titleNotes, String contextNotes, String date, int image) {

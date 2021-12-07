@@ -17,6 +17,10 @@ public class FirebaseCardSource implements CardSource {
     private List<CardNote> notesList = new ArrayList<>();
 
     public FirebaseCardSource(OnInitListener onInitListener) {
+        updateList(onInitListener);
+    }
+
+    public void updateList(OnInitListener onInitListener) {
         collection.orderBy("titleNotes")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -26,7 +30,6 @@ public class FirebaseCardSource implements CardSource {
                             CardNote note = documentSnapshot.toObject(CardNote.class);
                             notesList.add(note);
                         }
-                        Log.d("DEBUGLOG", "Successful" + notesList.toString());
                         onInitListener.onInit();
                     }
                 })
@@ -53,14 +56,16 @@ public class FirebaseCardSource implements CardSource {
 
     @Override
     public void updateNote(int position, String title, String context) {
+
         notesList.get(position).setTitleNotes(title);
         notesList.get(position).setContextNotes(context);
+        //collection.document(notesList.get(position).getTitleNotes()).set(notesList.get(position));
         collection.document(notesList.get(position).getId()).set(notesList.get(position));
     }
 
     @Override
     public void addNote(CardNote note) {
-        collection.add(note);
+        collection.document(note.getId()).set(note);
         notesList.add(note);
     }
 

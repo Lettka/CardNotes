@@ -62,4 +62,9 @@ public class CardSourceImp implements CardSource {
     public void clearNotes() {
         notes.clear();
     }
+
+    @Override
+    public void updateList(FirebaseCardSource.OnInitListener onInitListener) {
+
+    }
 }

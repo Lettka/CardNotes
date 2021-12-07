@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            CardNote note = new CardNote();
-            note.setId(UUID.randomUUID().toString());
+            CardNote note = new CardNote("title", "caption", R.drawable.music);
+            //note.setId(UUID.randomUUID().toString());
             source.addNote(note);
             adapter.setMenuPosition(source.size() - 1);
             adapter.notifyItemInserted(source.size() - 1);
@@ -148,6 +148,11 @@ public class MainActivity extends AppCompatActivity {
             int size = source.size();
             source.clearNotes();
             adapter.notifyItemRangeRemoved(0, size);
+            return true;
+        } else if (item.getItemId() == R.id.action_update_list) {
+            source.updateList(() -> {
+                adapter.notifyDataSetChanged();
+            });
             return true;
         } else if (item.getItemId() == R.id.action_delete_note) {
             source.deleteNote(adapter.getMenuPosition());
